@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LGE maximalni pocty preprav</title>
+    <style>
+        h1 {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-family: 'Arial', sans-serif;
+            color: #666;
+            line-height: 1.6;
+            text-align: justify;
+            margin-bottom: 30px;
+        }
+
+        table {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            border-collapse: collapse;
+            width: 35%;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 4px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #ef6c00;
+            color: white;
+            padding: 10px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        td input {
+            width: 120px;
+            text-align: center;
+            padding: 0px;
+            box-sizing: content-box;
+            border: 0px solid #ddd;
+            border-radius: 0px;
+        }
+
+        #saveButton {
+            display: block;
+            margin: 20px auto;
+            padding: 4px;
+            background-color: #ef6c00;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .button {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ef6c00;
+            border: 0.01em solid black;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 5px;
+
+        }
+
+        .button:focus {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ef6c00;
+            border: 2px solid black;
+            color: black;
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 0px;
+            outline: none;
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>LGE maximalni pocty preprav</h1>
+    <p>Maximalni pocty preprav "dopoledne" a "odpoledne". <b>Zadavat cisla 0-30</b>.</p>
+    <p>Uvedene hodnoty se budou nabizet v <i>LGE Dynamic Calendar API</i>, ktera poskytuje data pro kalendare v LGE
+        eshopech.<br>
+        Takze zde si dispeceri upravi kolik je <b>maximalni pocet preprav pro LGE ktery den</b>.</p>
+    <p>Defaultne je na kazdy pracovni den dopoledne a odpoledne 20 preprav a pro vikendy nebo svatky 0 preprav.<br>
+        Postupne budou pocty preprav klesat, jak si budou zakaznici objednavat.</p>
+    <p>Zadat hodnoty a ulozit na konci tabulky -> Ulozit do databaze</p>
+
+    <form action="http://localhost:5052/save_values" method="post">
+        <table>
+            <thead>
+                <tr>
+                    <th>Datum</th>
+                    <th>Doruceni 08-12</th>
+                    <th>Doruceni 12-16</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for value in dates %}
+                <tr>
+                    <td><input name=date value="{{ value['date'] }}" readonly></td>
+                    <td><input type="number" name="dopol" value="{{ value['count_dopol'] }}" min="0" max="30"></td>
+                    <td><input type="number" name="odpol" value="{{ value['count_odpol'] }}" min="0" max="30"></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        <button type="submit" class="button">Ulozit do databaze</button>
+    </form>
+</body>
+
+</html>
