@@ -1,15 +1,17 @@
-    FROM python:3.11
+    FROM python:3.11-slim
 
-    ADD main.py .
+    WORKDIR /app
+    COPY main.py database.py models.py logger.py requirements.txt  /app/
 
-    ADD database.py .
-
-    ADD models.py .
-
-    ADD requirements.txt .
+    ENV login_test=
+    ENV password_test=
+    ENV login_prod=
+    ENV password_prod=
 
     RUN pip install -r requirements.txt
 
-    COPY templates/ /templates/
+    COPY templates/ /app/templates/
 
-    CMD ["python", "./main.py"]
+    EXPOSE 5052
+
+    CMD ["python", "/app/main.py"]
